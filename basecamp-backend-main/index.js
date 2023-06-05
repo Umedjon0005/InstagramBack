@@ -7,6 +7,8 @@ import { UserController, PostController, Comment } from "./Controller/index.js";
 import cors from 'cors';
 import { handleValidationErrors, checkAuth } from "./utils/index.js";
 
+const port = process.env.PORT || 4444
+
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB error', err));
@@ -57,7 +59,7 @@ mongoose.connect(process.env.MONGODB_URL)
     app.get('/auth/posts/comments/:id', PostController.getPostComments);
     app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 
-app.listen(process.env.PORT || 4444, (err) => {
+app.listen(port, (err) => {
     if(err) {
         return console.log(err);
     }
