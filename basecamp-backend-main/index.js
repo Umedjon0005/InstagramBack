@@ -2,12 +2,12 @@ import express  from "express";
 import mongoose from "mongoose";
 import fs from 'fs';
 import multer from 'multer';
-import { registerValidation, loginValidation,  postCreateValidation, commentValidation} from "./validations.js";
+import { registerValidation, loginValidation,  postCreateValidation} from "./validation/validations.js";
 import { UserController, PostController, Comment } from "./Controller/index.js";
 import cors from 'cors';
 import { handleValidationErrors, checkAuth } from "./utils/index.js";
 
-const port = process.env.PORT || 4444
+const port = process.env.PORT || 4444;
 
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => console.log('DB ok'))
@@ -55,7 +55,7 @@ mongoose.connect(process.env.MONGODB_URL)
     app.get('/auth/posts/user/me/:id', checkAuth ,PostController.getMyPosts);
     app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
     app.delete('/posts/:id', checkAuth, PostController.remove);
-    app.post('/auth/comments/:id', checkAuth, commentValidation, Comment.createComment);
+    app.post('/auth/comments/:id', checkAuth, Comment.createComment);
     app.get('/auth/posts/comments/:id', PostController.getPostComments);
     app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 
